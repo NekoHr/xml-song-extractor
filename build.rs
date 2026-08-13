@@ -15,7 +15,7 @@ fn main() {
         // (Optional) Set an app icon if you have an .ico file in your project folder
         res.set_icon("app_icon.ico");
 
-        // Compile the resources into the final binary
+        // Compile the resources into the final binary 
         if let Err(e) = res.compile() {
             eprintln!("{}", e);
             std::process::exit(1);
