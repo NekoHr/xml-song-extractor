@@ -9,10 +9,21 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use iced::Theme;
 
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
+
+/// Queries the OS (Windows) to determine if Dark Mode is active
+fn get_system_theme() -> Theme {
+    match dark_light::detect() {
+        dark_light::Mode::Dark => Theme::Dark,
+        dark_light::Mode::Light => Theme::Light,
+        // Fallback to Dark if detection is indeterminate
+        dark_light::Mode::Default => Theme::Dark,
+    }
+}
 
 fn open_folder_in_explorer(path: &Path) {
     let target_dir = if path.is_file() {
@@ -49,6 +60,7 @@ struct App {
     progress: f32,
     total_files: usize,
     status_message: String,
+    theme: Theme,
 }
 
 impl Default for App {
@@ -59,6 +71,7 @@ impl Default for App {
             progress: 0.0,
             total_files: 0,
             status_message: String::from("Select files or a folder to get started."),
+            theme: get_system_theme(), // <--- Sets the theme once on app launch
         }
     }
 }
@@ -297,6 +310,11 @@ impl App {
             .center_y(Length::Fill)
             .padding(20)
             .into()
+    }
+
+    // Tell Iced to use the system theme detected on startup
+    fn theme(&self) -> Theme {
+        self.theme.clone()
     }
 }
 
