@@ -272,7 +272,7 @@ impl App {
         }
     }
 
-    fn view(&self) -> Element<Message> {
+    fn view(&self) -> Element<'_, Message> {
         let title = text("XML Song Extractor").size(28);
 
         let btn_files = button("Choose Files")
