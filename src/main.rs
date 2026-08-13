@@ -2,6 +2,7 @@
 
 use encoding_rs::{UTF_16BE, UTF_16LE, UTF_8};
 use iced::widget::{button, column, container, progress_bar, row, text};
+use iced::Theme;
 use iced::{Alignment, Element, Length, Task};
 use quick_xml::events::Event;
 use quick_xml::reader::Reader;
@@ -9,7 +10,6 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use iced::Theme;
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -40,7 +40,10 @@ fn open_folder_in_explorer(path: &Path) {
 // ============================================================================
 
 fn main() -> iced::Result {
-    iced::run("XML Song Extractor", App::update, App::view)
+    // Using iced::application allows passing the theme hook
+    iced::application("XML Song Extractor", App::update, App::view)
+        .theme(App::theme)
+        .run()
 }
 
 // ============================================================================
@@ -71,7 +74,7 @@ impl Default for App {
             progress: 0.0,
             total_files: 0,
             status_message: String::from("Select files or a folder to get started."),
-            theme: get_system_theme(), // <--- Sets the theme once on app launch
+            theme: get_system_theme(), // Sets the theme once on app launch
         }
     }
 }
@@ -363,7 +366,6 @@ fn extract_song_data(input_xml: &Path, output_txt: &Path) -> Result<(), String> 
                         if attr.key.as_ref() == b"Path" {
                             let path_str = String::from_utf8_lossy(&attr.value);
 
-                            // Fixed lifetime elision warning by using `.and_then(|s| s.to_str())`
                             let song_name = Path::new(path_str.as_ref())
                                 .file_name()
                                 .and_then(|s| s.to_str())
