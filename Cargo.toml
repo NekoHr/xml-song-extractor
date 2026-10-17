@@ -1,10 +1,10 @@
 [package]
 name = "xml_song_extractor"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
-iced = "0.13"
+iced = { version = "0.13", default-features = false, features = ["tiny-skia"] }
 rfd = "0.15"            # Native File & Folder Dialogs 
 quick-xml = "0.37"      # Fast XML Parser
 encoding_rs = "0.8"     # Robust UTF-8 / UTF-16 decoding
@@ -12,3 +12,10 @@ dark-light = "1.0"      # Queries the system settings to determine Dark or Light
 
 [build-dependencies]
 winres = "0.1"
+
+[profile.release]
+opt-level = "z"     # Optimize binary for small size
+lto = true          # Enable Link-Time Optimization across all crates
+codegen-units = 1   # Maximize optimization visibility across code units
+panic = "abort"     # Remove unwinding landing pads (shrinks code size)
+strip = true        # Strip debug symbols automatically from the binary

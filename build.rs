@@ -6,8 +6,8 @@ fn main() {
         // Define details visible in File Explorer Properties -> Details
         res.set("FileDescription", "XML Song Extractor Utility");
         res.set("ProductName", "XML Song Extractor");
-        res.set("ProductVersion", "1.0.0.0");
-        res.set("FileVersion", "1.0.0.0");
+        res.set("ProductVersion", "1.1.0.0");
+        res.set("FileVersion", "1.1.0.0");
         // res.set("CompanyName", "NekoHr / Organization");
         res.set("LegalCopyright", "Copyright © 2026 NekoHr");
         res.set("OriginalFilename", "xml_song_extractor.exe");
